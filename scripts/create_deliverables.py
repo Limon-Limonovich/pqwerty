@@ -278,3 +278,5 @@ for t in doc.tables:
 doc.save(OUT/'Отчёт_по_уроку.docx')
 for tmp in OUT.glob('._*.png'):tmp.unlink()
 print('Созданы',OUT/'Практические_задания.xlsx',OUT/'Отчёт_по_уроку.docx')
+from simplify_deliverables import simplify
+simplify()

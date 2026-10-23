@@ -32,7 +32,7 @@ check('03_Среднее_без_нулей','B1',40)
 check('04_Скидка','B7',4750);check('04_Скидка','B8',4500.9)
 check('05_Доступ','C7','Отказано');check('05_Доступ','C8','Доступ разрешен');check('05_Доступ','C9','Отказано')
 check('06_Срок_проекта','C1',datetime(2024,10,15));check('07_Дедлайн','C10',datetime(2024,10,11))
-assert len(f['07_Дедлайн'].conditional_formatting)==2
+assert len(f['07_Дедлайн'].conditional_formatting)==0
 check('08_Продажи','E2',176.25);check('08_Продажи','E4','Декабрь');check('08_Продажи','E6',6)
 check('09_Себестоимость','B9',1260000)
 for r,e in enumerate(['Годна','Брак','Годна','Годна','Брак'],2):check('10_Качество',f'D{r}',e)
@@ -46,7 +46,15 @@ for sn in ['13_В1_Рабочее_время','14_В2_Склад','15_В3_Про
 for name in ['Практические_задания.xlsx','Отчёт_по_уроку.docx']:
  with zipfile.ZipFile(P/name) as z:assert z.testzip() is None
 report=Document(P/'Отчёт_по_уроку.docx')
-assert len(report.inline_shapes)==2
-assert len(report.tables)==4
+assert len(report.inline_shapes)==0
+assert len(report.tables)==3
 print(f'OK: 18 листов, 13 диаграмм, {count} формул с сохранёнными результатами; арифметика, даты, граничные случаи и структура DOCX проверены.')
 print('Проверка программная. Пересчёт в настольном Excel и визуальная проверка Word не выполнялись.')
+
+for sheet in f:
+ assert sheet.sheet_view.showGridLines
+ for row in sheet:
+  for cell in row:
+   assert cell.fill.patternType is None
+   assert not cell.font.bold
+print('Оформление: без заливок и полужирных стилей; обычная сетка.')
